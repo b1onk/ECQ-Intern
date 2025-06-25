@@ -7,17 +7,12 @@
   <link rel="stylesheet" href="/D5W1/index.css">
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <div class="header">
-    <h1><span class="icon">📄</span> <span class="highlight">Data Management Hub</span></h1>
-    <p class="subtitle">Quản lý dữ liệu thông minh và hiệu quả</p>
-
-    <!-- Search -->
-    <div class="search-bar">
-      <input type="text" id="searchId" placeholder="Tìm kiếm">
-      <button id="searchBtn">Tìm</button>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1><span class="icon">📄</span> <span class="highlight">Data Management Hub</span></h1>
+      <p class="subtitle">Quản lý dữ liệu thông minh và hiệu quả</p>
     </div>
 
     <!-- Tabs -->
@@ -29,25 +24,23 @@
       <button class="tab-btn" data-type="photos"><span class="tab-icon">📷</span> Photos</button>
       <button class="tab-btn" data-type="todos"><span class="tab-icon">✅</span> Todos</button>
     </div>
+
+    <!-- Search + Add -->
+    <div class="search-bar">
+      <input type="text" id="searchId" placeholder="Tìm kiếm">
+      <button id="addBtn" class="addBtn">➕ Thêm</button>
+    </div>
+
+    <!-- Data Table -->
+    <div id="data-container"></div>
   </div>
 
-  <!-- Controls -->
-  <div class="form-section">
-    <button id="addBtn" class="addBtn">➕ Thêm</button>
-  </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 - Dữ liệu từ <a href="https://jsonplaceholder.typicode.com/" target="_blank">Thái Bảo Long</a></p>
+  </footer>
 
-
-
-  <!-- Data table -->
-  <div id="data-container"></div>
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-  <p>© 2025 - Dữ liệu từ <a href="https://jsonplaceholder.typicode.com/" target="_blank">Thái Bảo Long</a></p>
-</footer>
-
-<!-- JS -->
-<script src="/D5W1/index.js"></script>
+  <!-- JS -->
+  <script src="/D5W1/index.js"></script>
 </body>
 </html>

@@ -2,22 +2,29 @@ const baseURL = "https://jsonplaceholder.typicode.com";
 let currentType = "users";
 let fullData = [];
 let modalMode = "add";
+let currentMaxId = 0;
 
-// Fetch dữ liệu từ API
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
 async function fetchData(type) {
   currentType = type;
   try {
     const res = await fetch(`${baseURL}/${type}`);
     const data = await res.json();
     fullData = data;
+    currentMaxId = data.reduce((max, item) => Math.max(max, item.id || 0), 0);
     displayData(data);
   } catch (e) {
-    console.error("Lỗi khi fetch:", e);
     alert("Lỗi fetch dữ liệu!");
   }
 }
 
-// Hiển thị dữ liệu
 function displayData(data) {
   const container = document.getElementById("data-container");
   container.innerHTML = `<h2>${currentType.toUpperCase()}</h2>`;
@@ -28,38 +35,21 @@ function displayData(data) {
   }
 
   const wrapper = document.createElement("div");
-  wrapper.style.overflowX = "auto";
-  wrapper.style.width = "100%";
-  wrapper.style.borderRadius = "8px";
+  wrapper.className = "table-wrapper";
 
   const table = document.createElement("table");
-  table.style.borderCollapse = "collapse";
-  table.style.width = "100%";
-  table.style.minWidth = "900px";
-  table.style.backgroundColor = "white";
-
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
-
   const keys = Object.keys(data[0]);
+
   keys.forEach((key) => {
     const th = document.createElement("th");
     th.textContent = key;
-    th.style.padding = "12px 16px";
-    th.style.backgroundColor = "#f2f2f2";
-    th.style.fontWeight = "bold";
-    th.style.whiteSpace = "nowrap";
-    th.style.borderBottom = "1px solid #ddd";
     headerRow.appendChild(th);
   });
 
   const actionTh = document.createElement("th");
   actionTh.textContent = "Hành động";
-  actionTh.style.padding = "12px 16px";
-  actionTh.style.backgroundColor = "#f2f2f2";
-  actionTh.style.fontWeight = "bold";
-  actionTh.style.whiteSpace = "nowrap";
-  actionTh.style.borderBottom = "1px solid #ddd";
   headerRow.appendChild(actionTh);
   thead.appendChild(headerRow);
   table.appendChild(thead);
@@ -71,13 +61,6 @@ function displayData(data) {
     keys.forEach((key) => {
       const td = document.createElement("td");
       const val = item[key];
-
-      td.style.padding = "12px 16px";
-      td.style.borderBottom = "1px solid #ddd";
-      td.style.wordBreak = "break-word";
-      td.style.maxWidth = "240px";
-      td.style.verticalAlign = "top";
-
       if (typeof val === "object" && val !== null) {
         if (currentType === "users" && key === "address") {
           td.innerHTML = `${val.street}, ${val.city}<br><small>${val.zipcode}</small>`;
@@ -91,20 +74,16 @@ function displayData(data) {
       } else {
         td.textContent = val;
       }
-
       row.appendChild(td);
     });
 
     const actionTd = document.createElement("td");
     actionTd.innerHTML = `
-      <button onclick="editItem(${item.id})">✏️</button>
-      <button onclick="deleteItem(${item.id})">🗑️</button>
-    `;
-    actionTd.style.padding = "12px 16px";
-    actionTd.style.borderBottom = "1px solid #ddd";
-    actionTd.style.whiteSpace = "nowrap";
+      <div class="action-buttons">
+        <button class="action-btn edit-btn" onclick="editItem(${item.id})">✏️</button>
+        <button class="action-btn delete-btn" onclick="deleteItem(${item.id})">🗑️</button>
+      </div>`;
     row.appendChild(actionTd);
-
     tbody.appendChild(row);
   });
 
@@ -113,53 +92,47 @@ function displayData(data) {
   container.appendChild(wrapper);
 }
 
-// Chức năng edit trực tiếp từ bảng
 function editItem(id) {
   const item = fullData.find(u => u.id === id);
   if (item) openModal(currentType, "edit", item);
 }
 
-// Xoá bằng API
 async function deleteItem(id) {
   if (!confirm("Bạn có chắc chắn muốn xoá?")) return;
   try {
     await fetch(`${baseURL}/${currentType}/${id}`, { method: "DELETE" });
-    fullData = fullData.filter((item) => item.id !== id);
+    fullData = fullData.filter(item => item.id !== id);
     displayData(fullData);
-    alert("Xoá thành công (giả lập)");
+    alert("Xoá thành công");
   } catch (e) {
     alert("Xoá thất bại!");
   }
 }
 
-// Tìm kiếm
-document.getElementById("searchBtn").addEventListener("click", async () => {
-  const keyword = document.getElementById("searchId").value.trim().toLowerCase();
-  if (!keyword) return alert("Nhập từ khóa để tìm kiếm!");
-
+document.getElementById("searchId").addEventListener("input", debounce(async function (e) {
+  const keyword = e.target.value.trim().toLowerCase();
+  if (!keyword) {
+    displayData(fullData);
+    return;
+  }
   try {
     const res = await fetch(`${baseURL}/${currentType}`);
     const data = await res.json();
-    fullData = data;
-
     const filtered = data.filter(item =>
       Object.values(item).some(val =>
         String(val).toLowerCase().includes(keyword)
       )
     );
-
     displayData(filtered);
   } catch (error) {
     alert("Không thể tìm kiếm do lỗi kết nối.");
   }
-});
+}, 400));
 
-// Mở modal thêm
 document.getElementById("addBtn").addEventListener("click", () => {
   openModal(currentType, "add");
 });
 
-// Chuyển loại dữ liệu
 document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("tab-active"));
@@ -168,26 +141,24 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
-// Modal
 const modalHTML = `
-  <div id="formModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;">
-    <div class="modal-content" style="background:#fff; padding:20px; max-width:500px; margin:80px auto; border-radius:6px; position:relative;">
-      <span class="close-btn" style="position:absolute; right:10px; top:10px; cursor:pointer; font-size:20px;" onclick="closeModal()">×</span>
+  <div id="formModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">×</span>
       <h3 id="modalTitle">Thêm dữ liệu</h3>
       <form id="dataForm">
         <div id="formFields"></div>
-        <button type="submit" id="modalSubmitBtn">Gửi</button>
+        <button type="submit" id="modalSubmitBtn" class="saveBtn">Gửi</button>
       </form>
     </div>
-  </div>
-`;
+  </div>`;
 document.body.insertAdjacentHTML("beforeend", modalHTML);
 
 function openModal(type, mode = "add", data = {}) {
   modalMode = mode;
   document.getElementById("modalTitle").textContent = mode === "add" ? "Thêm dữ liệu" : "Chỉnh sửa dữ liệu";
   document.getElementById("modalSubmitBtn").textContent = mode === "add" ? "Thêm" : "Lưu";
-  document.getElementById("formModal").style.display = "block";
+  document.getElementById("formModal").style.display = "flex";
   buildFormFields(type, data);
 }
 
@@ -198,7 +169,6 @@ function closeModal() {
 function buildFormFields(type, data = {}) {
   const fieldsContainer = document.getElementById("formFields");
   fieldsContainer.innerHTML = "";
-
   let fields = [];
   switch (type) {
     case "users": fields = ["id", "name", "username", "email", "phone", "website"]; break;
@@ -208,15 +178,16 @@ function buildFormFields(type, data = {}) {
     case "todos": fields = ["id", "userId", "title", "completed"]; break;
     case "photos": fields = ["id", "albumId", "title", "url", "thumbnailUrl"]; break;
   }
-
   fields.forEach(field => {
+    const isAddMode = modalMode === "add";
+    const isIdField = field === "id";
+    if (isAddMode && isIdField) return;
     const value = data[field] || "";
     fieldsContainer.innerHTML += `
-      <div style="margin-bottom:10px;">
-        <label><strong>${field}</strong></label><br>
-        <input type="text" name="${field}" value="${value}" style="width:100%; padding:6px;">
-      </div>
-    `;
+      <div class="form-group">
+        <label for="${field}">${field}</label>
+        <input type="text" name="${field}" id="${field}" value="${value}" ${isIdField ? "readonly" : ""}>
+      </div>`;
   });
 }
 
@@ -233,11 +204,9 @@ function getFormDataAsJSON() {
   return data;
 }
 
-// Gửi form modal
 document.getElementById("dataForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const jsonData = getFormDataAsJSON();
-
   try {
     if (modalMode === "add") {
       const res = await fetch(`${baseURL}/${currentType}`, {
@@ -246,11 +215,11 @@ document.getElementById("dataForm").addEventListener("submit", async (e) => {
         body: JSON.stringify(jsonData),
       });
       const result = await res.json();
+      result.id = ++currentMaxId;
       fullData.unshift(result);
       displayData(fullData);
-      alert("Thêm thành công (giả lập)");
+      alert("Thêm thành công");
     } else if (modalMode === "edit") {
-      if (!jsonData.id) return alert("Phải có ID để sửa!");
       const res = await fetch(`${baseURL}/${currentType}/${jsonData.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -260,16 +229,14 @@ document.getElementById("dataForm").addEventListener("submit", async (e) => {
       const index = fullData.findIndex(item => item.id === result.id);
       if (index !== -1) fullData[index] = result;
       displayData(fullData);
-      alert("Sửa thành công (giả lập)");
+      alert("Sửa thành công");
     }
   } catch (err) {
     alert("Lỗi xử lý dữ liệu!");
   }
-
   closeModal();
 });
 
-// Load mặc định
 window.onload = () => {
   fetchData("users");
 };
