@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trang Chủ - D5W2</title>
+
+
+  <link rel="stylesheet" href="/D5W2/css/index.css" />
+
+
+  <script type="module" src="/D5W2/js/search.js"></script>
+  <script type="module" src="/D5W2/js/login.js"></script>
+  <script type="module" src="/D5W2/js/trending.js"></script>
+  <script type="module" src="/D5W2/js/trailer.js"></script>
+  <script type="module" src="/D5W2/js/popular.js"></script>
+  <script type="module" src="/D5W2/js/leaderboard.js"></script>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section id="search-section" style="position: relative;">
+    <form id="form" autocomplete="off">
+      <input type="text" id="search" placeholder="Tìm kiếm..." />
+      <ul id="search-suggestions" class="dropdown-list"></ul>
+    </form>
+  </section>
+  <section class="trending-section">
+    <h2>Trending</h2>
+    <div class="mode-switch">
+      <div class="toggle-group">
+        <input type="radio" id="day-mode" name="mode" value="day" checked />
+        <label for="day-mode">Ngày</label>
+
+        <input type="radio" id="week-mode" name="mode" value="week" />
+        <label for="week-mode">Tuần</label>
+      </div>
+    </div>
+
+    <div id="trending-container"></div>
+  </section>
+
+  <section class="popular-section">
+    <h2>Phổ biến</h2>
+    <div id="popular-container"></div>
+  </section>
+
+  <section class="trailer-section">
+    <h2>Trailer Mới</h2>
+    <div id="trailer-container" style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;"></div>
+  </section>
+  
+  <section class="leaderboard-section">
+    <h2>Bảng xếp hạng</h2>
+    <div id="leaderboard-container"></div>
+  </section>
+
+  <script>
+    fetch('/D5W2/page/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar-placeholder').innerHTML = html;
+      });
+  </script>
+</body>
+</html>
