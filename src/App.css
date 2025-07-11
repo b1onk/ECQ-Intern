@@ -1,0 +1,194 @@
+/* Reset cơ bản */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fdfdfd url('https://www.transparenttextures.com/patterns/lined-paper.png') repeat;
+  background-size: auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  color: #333; /* ✅ Mặc định chữ toàn trang là màu tối */
+}
+
+.to-do-list {
+  width: 100%;
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid #dedede;
+  border-radius: 12px;
+  padding: 25px 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  color: #333; /* ✅ Đảm bảo chữ trong khung là màu tối */
+}
+
+.to-do-list h1 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 30px;
+  margin-bottom: 25px;
+  border-bottom: 2px dashed #aaa;
+  padding-bottom: 12px;
+}
+
+/* Khu nhập task */
+.to-do-list .input-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.to-do-list input[type="text"] {
+  padding: 10px;
+  width: 75%;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  font-size: 16px;
+  outline: none;
+  background-color: #fff;
+  color: #333;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  padding: 10px 15px;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+/* 
+list */
+ol {
+  padding-left: 0;
+  list-style: none;
+}
+
+li {
+  margin: 10px 0;
+  background-color: #f0f8ff;
+  border-left: 5px solid #2980b9;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.text {
+  font-size: 17px;
+  color: #333; 
+  word-break: break-word;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+button:active {
+  transform: scale(0.97);
+}
+.delete-button {
+  background-color: black;
+}
+.delete-button:hover {
+  background-color: black;
+}
+
+.edit-button {
+  background-color: #f9c74f;
+  color: #333;
+}
+.edit-button:hover {
+  background-color: #f1b900;
+}
+
+.move-button {
+  background-color: black;
+}
+.move-button:hover {
+  background-color: black;
+}
+.add-button {
+  background-color: black;
+}
+
+.add-button:hover {
+  background-color: black;
+}
+li input[type="text"] {
+  padding: 8px;
+  width: 100%;
+  font-size: 15px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333; 
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .to-do-list {
+    padding: 20px;
+  }
+
+  .to-do-list .input-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .to-do-list input[type="text"] {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.checkbox-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.checkbox-text input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
