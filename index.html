@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Management Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+  <div class="search-container">
+    <h1>Data Management Hub</h1>
+    <h2>Quản lý dữ liệu thông minh và hiệu quả</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm dữ liệu..." />
+      <button id="openModalBtn">➕ Thêm mới</button>
+    </div>
+  </div>
+  <div class="tabs-wrapper">
+    <div class="tabs" id="tabs">
+        <button class="tabBtn active" data-tab="users">👥 Users</button>
+        <button class="tabBtn" data-tab="posts">📧 Posts</button>
+        <button class="tabBtn" data-tab="albums">📋 Albums</button>
+        <button class="tabBtn" data-tab="todos">✅ Todos</button>
+        <button class="tabBtn" data-tab="photos">📷 Photos</button>
+        <button class="tabBtn" data-tab="comments">💬 Comments</button>
+    </div>
+  </div>
+
+  <h3 id="dataTitle" class="section-title">Quản lý người dùng</h3>
+
+  <div id="contentArea">
+    <!-- Dữ liệu của tab sẽ hiển thị tại đây -->
+  </div>
+
+
+  <div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modalTitle">Thêm mới</h2>
+    <form id="modalForm">
+      <!-- Form sẽ được render động tại đây -->
+    </form>
+    <button id="modalSaveBtn">Lưu</button>
+  </div>
+</div>
+
+  <footer>
+    <hr style="margin: 40px 0;">
+    <p>Project Day 5 _ NGUYEN PHAM NHAT TRAN</p>
+  </footer>
+
+  <!-- Confirm -->
+  <div id="confirmModal" class="modal hidden">
+  <div class="modal-content">
+    <p id="confirmMessage">Bạn có chắc muốn xoá?</p>
+    <div style="margin-top: 20px; text-align: right;">
+      <button id="confirmCancelBtn">Hủy</button>
+      <button id="confirmOkBtn">OK</button>
+    </div>
+  </div>
+</div> 
+
+<!-- Modal thông báo -->
+<div id="alertModal" class="modal hidden">
+  <div class="modal-content">
+    <p id="alertMessage">Thông báo</p>
+    <div style="margin-top: 20px; text-align: right;">
+      <button id="alertOkBtn">OK</button>
+    </div>
+  </div>
+</div>
+
+  <script type="module" src="./jscode/mainnn.js"></script>
+  <script type="module" src="./jscode/search.js"></script>
+</body>
+</html>
