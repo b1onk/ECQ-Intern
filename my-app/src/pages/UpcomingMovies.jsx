@@ -6,7 +6,7 @@ import "../App.css";
 function UpcomingMovies() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);  // trang đầu tiên là trang 1, nếu =0 thì dễ lỗi, 
   const [language, setLanguage] = useState("");
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function UpcomingMovies() {
       try {
         setLoading(true);
         const data = await fetchUpcomingMovies(page);
-        setMovies((prev) => [...prev, ...data.results]);
+        setMovies((prev) => [...prev, ...data.results]); // [...] là cú pháp spread operator để nối mảng
       } catch (err) {
         console.error("Lỗi fetch upcoming movies:", err);
       } finally {
@@ -23,12 +23,12 @@ function UpcomingMovies() {
     };
 
     loadMovies();
-  }, [page]);
+  }, [page]); // chạy lại array chứa page: mỗi khi page đổi thì gọi loadMovies
 
   // Lọc phim có ngày phát hành >= hôm nay
-  const today = new Date();
+  const today = new Date(); // lấy tg hiện tại
   const upcomingFiltered = movies.filter((movie) => {
-    const releaseDate = new Date(movie.release_date);
+    const releaseDate = new Date(movie.release_date); // biến chuỗi ngày thành dạng date để so sánh 
     return releaseDate >= today;
   });
 
@@ -47,8 +47,8 @@ function UpcomingMovies() {
           <input
             type="text"
             placeholder="en, vi, ja..."
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            value={language} 
+            onChange={(e) => setLanguage(e.target.value)} // Khi thay đổi input, cập nhật state
           />
         </div>
       </aside>
@@ -86,7 +86,7 @@ function UpcomingMovies() {
             onClick={() => setPage((prev) => prev + 1)}
             disabled={loading}
           >
-            ⬇ Load More
+            Load More
           </button>
         </div>
       </main>

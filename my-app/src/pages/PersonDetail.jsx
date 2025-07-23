@@ -43,7 +43,7 @@ function PersonDetail() {
           <p><strong>Ngày sinh:</strong> {person.birthday || "Không rõ"}</p>
           <p><strong>Ngày mất:</strong> {person.deathday || "—"}</p>
           <p><strong>Nơi sinh:</strong> {person.place_of_birth || "Không rõ"}</p>
-          <p style={{ marginTop: "1rem" }}><strong>📝 Tiểu sử:</strong></p>
+          <p style={{ marginTop: "1rem" }}><strong>Tiểu sử:</strong></p>
           <p>{person.biography || "Không có tiểu sử."}</p>
         </div>
       </div>
