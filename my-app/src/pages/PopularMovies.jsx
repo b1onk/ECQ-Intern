@@ -1,4 +1,3 @@
-// 📁 src/pages/PopularMovies.jsx
 import React, { useEffect, useState } from "react";
 import { API_KEY, BASE_URL, IMG_BASE } from "../api";
 import "../App.css";
@@ -9,12 +8,12 @@ function PopularMovies() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  // Bộ lọc
+  // filter
   const [minRating, setMinRating] = useState(0);
   const [year, setYear] = useState("");
   const [language, setLanguage] = useState("");
 
-  // 📌 Gọi API mỗi khi filter hoặc page thay đổi
+  // Gọi API mỗi khi filter hoặc page thay đổi
   useEffect(() => {
     const fetchFilteredMovies = async () => {
       setLoading(true);
@@ -49,7 +48,7 @@ function PopularMovies() {
     fetchFilteredMovies();
   }, [page, minRating, year, language]);
 
-  // 📌 Khi filter thay đổi, reset page về 1
+  // Khi filter thay đổi, reset page về 1
   useEffect(() => {
     setPage(1);
   }, [minRating, year, language]);
@@ -122,7 +121,7 @@ function PopularMovies() {
             {page < totalPages && (
               <div className="load-more-wrapper">
                 <button className="load-more-btn" onClick={() => setPage((p) => p + 1)}>
-                  ⬇ Load More
+                   Load More
                 </button>
               </div>
             )}
